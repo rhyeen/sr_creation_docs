@@ -10,7 +10,7 @@ By default, this will expose the files on localhost via port 8000.  If configure
 
 ## Run
 
-You can view the docs by following **Setup**, then opening `index.html` in a browser.
+You can view the docs by following **Setup**, then opening `index.html` in a browser.  You will also need to have CORS enabled to serve the OpenAPI docs locally.  We suggest using [this Chrome extension](https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en).
 
 ## Information
 
