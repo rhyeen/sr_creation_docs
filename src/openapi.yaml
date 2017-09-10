@@ -1,0 +1,121 @@
+openapi: '3.0.0'
+info:
+  title: Shardrealms API
+  description: |
+    # Introduction
+    This is the official Shardrealms API documentation. This documentation contains all API calls, as all API calls are publically accessible.
+    These APIs are primarily exposed via a Node.js endpoint that can be viewed on the [SR Creation App repo](https://github.com/rhyeen/sr_creation_ng2).
+  termsOfService: 'http://shardrealms.com/api/terms/'
+  contact:
+    email: shardreams@gmail.com
+    url: https://github.com/rhyeen/sr_creation
+  license:
+    name: GNU General Public License v3.0
+    url: 'https://www.gnu.org/licenses/gpl-3.0.en.html'
+  version: 1.0.0
+server:
+  url: shardrealms.com
+components:
+  schemas:
+    'page':
+      example:
+        summary:
+          name: 'Thorax, the Destroyer of Worlds'
+          properties:
+            height: 6 feet 4 inches
+            weight: 240 lbs
+            age: 32
+        details:
+          properties:
+          list:
+          - id: XX_1234567890123
+        pages:
+        - type: CH
+          properties:
+            properties:
+            list:
+            - id: XX_1234567890123
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: object
+          required:
+          - name
+          - properties
+          - text
+          properties:
+            'name':
+              type: string
+            'properties':
+              type: object
+              additionalProperties:
+                type: string
+            'text':
+              type: string
+        details:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/pageContentContainer'
+        images:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/pageContentContainer'
+        maps:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/pageContentContainer'
+        pages:
+          type: array
+          items:
+            type: object
+            required:
+            - type
+            - properties
+            properties:
+              'type':
+                type: string
+              'properties':
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/pageContentContainer'
+    'pageContentContainer':
+      type: object
+      required:
+      - properties
+      - list
+      properties:
+        'properties':
+          type: object
+          additionalProperties:
+            type: string
+        'list':
+          type: array
+          items:
+            type: object
+            required:
+            - id
+            properties:
+              'id':
+                type: string
+paths:
+  /page:
+    get:
+      tags:
+        - page
+      summary: Retrieve a page and details.
+      description: Retrieves a page's summary and related pages.
+      operationId: getPage
+      parameters:
+      - in: query
+        type: string
+        name: id
+        description: Id of the page to retrieve.
+        required: true
+        example: XX_1234567890123
+      responses:
+        '200':
+          description: Page object
+          schema:
+            $ref: '#/components/schemas/page'
