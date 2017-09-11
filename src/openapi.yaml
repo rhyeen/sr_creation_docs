@@ -1,4 +1,4 @@
-openapi: '3.0.0'
+openapi: 3.0.0
 info:
   title: Shardrealms API
   description: |
@@ -99,6 +99,78 @@ components:
             properties:
               'id':
                 type: string
+    'detail':
+      type: object
+      required:
+      - name
+      - content
+      properties:
+        'name':
+          type: string
+        'content':
+          type: object
+          required:
+          - mark_down
+          - partitions
+          properties:
+            'mark_down':
+              type: string
+            'partitions':
+              $ref: '#/components/schemas/detailPartition'
+    'detailPartition':
+      type: array
+      items:
+        type: object
+        required:
+        - type
+        - text
+        properties:
+          'type':
+            type: string
+            enum:
+            - text
+            - tag
+            default: tag
+          'text':
+            type: string
+          'id':
+            type: string
+            description: Required if type is tag.
+            example: TG_1234567890123
+          'tag':
+            type: object
+            description: Required if type is tag.
+            required:
+            - id
+            properties:
+              'id':
+                type: string
+                description: Page id tagged.
+                example: XX_1234567890123
+    'image':
+      type: object
+      required:
+      - name
+      - source
+      - caption
+      - link
+      - thumbnail
+      properties:
+        'name':
+          type: string
+        'source':
+          type: string
+        'caption':
+          type: string
+        'link':
+          type: string
+        'thumbnail':
+          type: object
+          required:
+          - link
+          properties:
+            'link':
+              type: string
 paths:
   /page:
     get:
@@ -119,3 +191,260 @@ paths:
           description: Page object
           schema:
             $ref: '#/components/schemas/page'
+    post:
+      tags:
+        - page
+      summary: Create a new page
+      description: Create a blank page, linked to a related page.
+      operationId: createPage
+      parameters:
+      - in: query
+        type: string
+        name: type
+        description: A supported page type.
+        required: true
+        example: XX
+      - in: query
+        type: string
+        name: link
+        description: Id of the related page to link this page against.
+        required: false
+        example: XX_1234567890123
+      - in: query
+        type: string
+        name: name
+        description: Name of the new page.
+        required: true
+        example: Temple of the High Sages
+      responses:
+        '200':
+          description: XX_1234567890124
+    delete:
+      tags:
+        - page
+      summary: Disable a page
+      description: Mark a page as disabled.
+      operationId: disablePage
+      parameters:
+      - in: query
+        type: string
+        name: id
+        description: Id of the page to retrieve.
+        required: true
+        example: XX_1234567890123
+      responses:
+        '200':
+          description: Success
+  /page/summary:
+    put:
+      tags:
+      - summary
+      summary: Modify page summary
+      description: Modify a page's summary details
+      operationId: updateSummary
+      parameters:
+      - in: body
+        name: body
+        description: page summary details
+        required: true
+        schema:
+          type: object
+          required:
+          - name
+          - summary
+          properties:
+            'name':
+              type: string
+            'summary':
+              type: object
+              required:
+              - text
+              - properties
+              properties:
+                'text':
+                  type: string
+                'properties':
+                  type: object
+                  additionalProperties:
+                    type: string
+      responses:
+        '200':
+          description: Success
+  /page/detail:
+    post:
+      tags:
+      - detail
+      summary: Add page detail
+      description: Add a page's detail
+      operationId: addDetail
+      parameters:
+      - in: query
+        type: string
+        name: id
+        description: Id of the page associated with this detail.
+        required: true
+        example: XX_1234567890123
+      - in: body
+        name: body
+        description: page details
+        required: true
+        schema:
+          $ref: '#/components/schemas/detail'
+      responses:
+        '200':
+          description: DE_1234567890124
+    put:
+      tags:
+      - detail
+      summary: Modify page detail
+      description: Modify a page's detail
+      operationId: updateDetail
+      parameters:
+      - in: query
+        type: string
+        name: id
+        description: Id of the page associated with this detail.
+        required: true
+        example: XX_1234567890123
+      - in: query
+        type: string
+        name: detail
+        description: Id of the detail to modify.
+        required: true
+        example: DE_1234567890123
+      - in: body
+        name: body
+        description: page details
+        required: true
+        schema:
+          $ref: '#/components/schemas/detail'
+      responses:
+        '200':
+          description: Success
+    delete:
+      tags:
+      - detail
+      summary: Disable page detail
+      description: Disable a page's detail
+      operationId: disableDetail
+      parameters:
+      - in: query
+        type: string
+        name: id
+        description: Id of the page associated with this detail.
+        required: true
+        example: XX_1234567890123
+      - in: query
+        type: string
+        name: detail
+        description: Id of the detail to modify.
+        required: true
+        example: DE_1234567890123
+      responses:
+        '200':
+          description: Success
+  /page/image:
+    post:
+      tags:
+      - image
+      summary: Add page image
+      description: Add a page's image
+      operationId: addImage
+      parameters:
+      - in: query
+        type: string
+        name: id
+        description: Id of the page associated with this image.
+        required: true
+        example: XX_1234567890123
+      - in: body
+        name: body
+        description: page images
+        required: true
+        schema:
+          $ref: '#/components/schemas/image'
+      responses:
+        '200':
+          description: IM_1234567890124
+    put:
+      tags:
+      - image
+      summary: Modify page image
+      description: Modify a page's image
+      operationId: updateImage
+      parameters:
+      - in: query
+        type: string
+        name: id
+        description: Id of the page associated with this image.
+        required: true
+        example: XX_1234567890123
+      - in: query
+        type: string
+        name: image
+        description: Id of the image to modify.
+        required: true
+        example: IM_1234567890123
+      - in: body
+        name: body
+        description: page images
+        required: true
+        schema:
+          $ref: '#/components/schemas/image'
+      responses:
+        '200':
+          description: Success
+    delete:
+      tags:
+      - image
+      summary: Disable page image
+      description: Disable a page's image
+      operationId: disableImage
+      parameters:
+      - in: query
+        type: string
+        name: id
+        description: Id of the page associated with this image.
+        required: true
+        example: XX_1234567890123
+      - in: query
+        type: string
+        name: image
+        description: Id of the image to modify.
+        required: true
+        example: IM_1234567890123
+      responses:
+        '200':
+          description: Success
+  /page/page-links:
+    put:
+      tags:
+      - links
+      summary: Modify page links
+      description: Modify a page's links
+      operationId: updatePageLinks
+      parameters:
+      - in: query
+        type: string
+        name: id
+        description: Id of the page associated with this link.
+        required: true
+        example: XX_1234567890123
+      - in: body
+        name: body
+        description: page links
+        required: true
+        schema:
+          type: object
+          required:
+          - links
+          properties:
+            'links':
+              type: array
+              items:
+                type: string
+                example: XX_1234567890123
+      responses:
+        '200':
+          description: Success
+
