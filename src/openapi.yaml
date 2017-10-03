@@ -99,7 +99,7 @@ components:
             properties:
               'id':
                 type: string
-    'detail':
+    'pageDetail':
       type: object
       required:
       - name
@@ -147,7 +147,7 @@ components:
                 type: string
                 description: Page id tagged.
                 example: XX_1234567890123
-    'image':
+    'pageImage':
       type: object
       required:
       - name
@@ -289,7 +289,7 @@ paths:
         description: page details
         required: true
         schema:
-          $ref: '#/components/schemas/detail'
+          $ref: '#/components/schemas/pageDetail'
       responses:
         '200':
           description: DE_1234567890124
@@ -317,7 +317,7 @@ paths:
         description: page details
         required: true
         schema:
-          $ref: '#/components/schemas/detail'
+          $ref: '#/components/schemas/pageDetail'
       responses:
         '200':
           description: Success
@@ -362,7 +362,7 @@ paths:
         description: page images
         required: true
         schema:
-          $ref: '#/components/schemas/image'
+          $ref: '#/components/schemas/pageImage'
       responses:
         '200':
           description: IM_1234567890124
@@ -390,7 +390,7 @@ paths:
         description: page images
         required: true
         schema:
-          $ref: '#/components/schemas/image'
+          $ref: '#/components/schemas/pageImage'
       responses:
         '200':
           description: Success
