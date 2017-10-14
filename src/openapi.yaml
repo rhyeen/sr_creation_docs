@@ -183,8 +183,8 @@ paths:
       - in: query
         type: string
         name: id
-        description: Id of the page to retrieve.
-        required: true
+        description: Id of the page to retrieve. If not provided, will return the root (home) page for the user.
+        required: false
         example: XX_1234567890123
       responses:
         '200':
@@ -219,6 +219,43 @@ paths:
       responses:
         '200':
           description: XX_1234567890124
+    put:
+      tags:
+        - page
+      summary: Update a page
+      description: Update a page's related pages order.
+      operationId: updatePage
+      parameters:
+      - in: query
+        type: string
+        name: id
+        description: Id of the page to retrieve.
+        required: true
+        example: XX_1234567890123
+      - in: body
+        name: body
+        description: page details to update
+        required: true
+        schema:
+          type: object
+          required:
+          - pages
+          properties:
+            'pages':
+              type: object
+              required:
+              - type
+              properties:
+                'type':
+                  type: string
+                'properties':
+                  type: object
+                  description: Cannot contain the "list" property.
+                  additionalProperties:
+                    type: object
+      responses:
+        '200':
+          description: Success
     delete:
       tags:
         - page
