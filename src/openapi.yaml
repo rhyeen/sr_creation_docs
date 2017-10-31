@@ -108,15 +108,7 @@ components:
         'name':
           type: string
         'content':
-          type: object
-          required:
-          - mark_down
-          - partitions
-          properties:
-            'mark_down':
-              type: string
-            'partitions':
-              $ref: '#/components/schemas/detailPartition'
+          $ref: '#/components/schemas/renderedTags'
     'detailPartition':
       type: array
       items:
@@ -191,6 +183,16 @@ components:
             description: Summary properties
             additionalProperties:
               type: string
+    'renderedTags':
+      type: object
+      required:
+      - mark_down
+      - partitions
+      properties:
+        'mark_down':
+          type: string
+        'partitions':
+          $ref: '#/components/schemas/detailPartition'
 paths:
   /user/page:
     get:
@@ -308,6 +310,12 @@ paths:
       description: Modify a page's summary details
       operationId: updateSummary
       parameters:
+      - in: query
+        type: string
+        name: id
+        description: Id of the page to update.
+        required: true
+        example: XX_1234567890123
       - in: body
         name: body
         description: page summary details
@@ -538,4 +546,31 @@ paths:
           description: Page search object
           schema:
             $ref: '#/components/schemas/pageSearch'
+  /user/tag/render:
+    get:
+      tags:
+      - render
+      - detail
+      - tag
+      summary: Render tags
+      description: Returns validated markdown and partitions of given markdown.
+      operationId: renderTags
+      parameters:
+      - in: body
+        name: body
+        description: markdown
+        required: true
+        schema:
+          type: object
+          required:
+          - mark_down
+          properties:
+            'mark_down':
+              type: string
+              example: Hello {world}()
+      responses:
+        '200':
+          description: Validated markdown and partitions of given markdown.
+          schema:
+            $ref: '#/components/schemas/renderedTags'
 
