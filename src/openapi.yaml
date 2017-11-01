@@ -122,6 +122,7 @@ components:
             enum:
             - text
             - tag
+            - break
             default: tag
           'text':
             type: string
@@ -547,7 +548,7 @@ paths:
           schema:
             $ref: '#/components/schemas/pageSearch'
   /user/tag/render:
-    get:
+    post:
       tags:
       - render
       - detail
