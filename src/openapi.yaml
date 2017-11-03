@@ -366,7 +366,18 @@ paths:
           $ref: '#/components/schemas/pageDetail'
       responses:
         '200':
-          description: DE_1234567890124
+          description: Id of the new detail + final markdown rendering
+          schema:
+            type: object
+            required:
+            - id
+            - content
+            properties:
+              'id':
+                type: string
+                example: DE_1234567890123
+              'content':
+                $ref: '#/components/schemas/renderedTags'
     put:
       tags:
       - detail
@@ -394,7 +405,18 @@ paths:
           $ref: '#/components/schemas/pageDetail'
       responses:
         '200':
-          description: Success
+          description: Success + final markdown rendering
+          schema:
+            type: object
+            required:
+            - message
+            - content
+            properties:
+              'message':
+                type: string
+                example: Success
+              'content':
+                $ref: '#/components/schemas/renderedTags'
     delete:
       tags:
       - detail
@@ -439,7 +461,15 @@ paths:
           $ref: '#/components/schemas/pageImage'
       responses:
         '200':
-          description: IM_1234567890124
+          description: Id of the new image
+          schema:
+            type: object
+            required:
+            - id
+            properties:
+              'id':
+                type: string
+                example: IM_1234567890123
     put:
       tags:
       - image
